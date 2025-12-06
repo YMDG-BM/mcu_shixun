@@ -115,7 +115,7 @@ void LCD_Init(void)
 	Delay_ms(100);
 	
 	LCD_BL_CMD(1);	//´ò¿ª±³¹â
-  Delay_ms(100);
+  	Delay_ms(100);
 	
 	//************* Start Initial Sequence **********//
 	LCD_WR_REG(0x11); //Sleep out 
