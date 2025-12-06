@@ -27,6 +27,11 @@ virtualFolder:
         - path: key.c
         - path: key.h
         - path: delay.h
+        - path: lcd.c
+        - path: lcd.h
+        - path: lcdfont.h
+        - path: spi.c
+        - path: spi.h
       folders: []
 dependenceList: []
 outDir: build
