@@ -1,0 +1,457 @@
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN .\Objects\lcd.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE lcd.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\lcd.l
+                    -st) OBJECT(.\Objects\lcd.obj)
+
+line level    source
+
+   1          #include "lcd.h"
+*** ERROR C141 IN LINE 19 OF lcd.h: syntax error near 'dat', expected ')'
+*** ERROR C141 IN LINE 20 OF lcd.h: syntax error near 'dat', expected ')'
+*** ERROR C141 IN LINE 21 OF lcd.h: syntax error near 'dat', expected ')'
+*** ERROR C141 IN LINE 22 OF lcd.h: syntax error near 'dat', expected ')'
+*** ERROR C141 IN LINE 23 OF lcd.h: syntax error near 'x1', expected ')'
+*** ERROR C141 IN LINE 28 OF lcd.h: syntax error near 'xsta', expected ')'
+*** ERROR C141 IN LINE 29 OF lcd.h: syntax error near 'x', expected ')'
+*** ERROR C141 IN LINE 30 OF lcd.h: syntax error near 'x1', expected ')'
+*** ERROR C141 IN LINE 31 OF lcd.h: syntax error near 'x1', expected ')'
+*** ERROR C141 IN LINE 32 OF lcd.h: syntax error near 'x0', expected ')'
+*** ERROR C141 IN LINE 34 OF lcd.h: syntax error near 'x', expected ')'
+*** ERROR C141 IN LINE 35 OF lcd.h: syntax error near 'x', expected ')'
+   2          #include "lcdfont.h"
+   3          #include "delay.h"
+   4          #include "spi.h"
+*** ERROR C141 IN LINE 38 OF spi.h: syntax error near 'TxData', expected ')'
+   5          //#include "usart1.h"
+   6          typedef unsigned char u8;
+   7          typedef unsigned int u16;
+   8          typedef unsigned long u32;
+   9          
+  10          /******************************************************************************
+  11                函数说明：LCD串行数据写入函数
+  12                入口数据：dat  要写入的串行数据
+  13                返回值：  无
+  14          ******************************************************************************/
+  15          void LCD_Writ_Bus(u8 dat) 
+  16          {       
+  17   1          LCD_CS_CMD(0);     // 使能片选
+  18   1      //    LCD_DC_CMD(1);     // 选择数据模式
+  19   1          SPI2_ReadWriteByte(dat);
+  20   1          LCD_CS_CMD(1);     // 禁止片选
+  21   1      }
+  22          
+  23          /******************************************************************************
+  24                函数说明：LCD写入数据
+  25                入口数据：dat 写入的数据
+  26                返回值：  无
+  27          ******************************************************************************/
+  28          void LCD_WR_DATA8(u8 dat)
+  29          {
+  30   1              LCD_Writ_Bus(dat);
+  31   1      }
+  32          
+  33          
+  34          /******************************************************************************
+  35                函数说明：LCD写入数据
+  36                入口数据：dat 写入的数据
+  37                返回值：  无
+  38          ******************************************************************************/
+  39          void LCD_WR_DATA(u16 dat)
+  40          {
+  41   1              LCD_Writ_Bus(dat>>8);
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 2   
+
+  42   1              LCD_Writ_Bus(dat&0xff);
+  43   1      }
+  44          
+  45          
+  46          /******************************************************************************
+  47                函数说明：LCD写入命令
+  48                入口数据：dat 写入的命令
+  49                返回值:无
+  50          ******************************************************************************/
+  51          void LCD_WR_REG(u8 dat)
+  52          {
+  53   1              LCD_DC_CMD(0);//写命令
+  54   1              LCD_Writ_Bus(dat);
+  55   1              LCD_DC_CMD(1);//写数据
+  56   1      }
+  57          
+  58          
+  59          /******************************************************************************
+  60                函数说明：设置起始和结束地址
+  61                入口数据：x1,x2 设置列的起始和结束地址
+  62                          y1,y2 设置行的起始和结束地址
+  63                返回值：  无
+  64          ******************************************************************************/
+  65          void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
+  66          {
+*** ERROR C236 IN LINE 66 OF lcd.c: '_LCD_Address_Set': different length of parameter lists
+  67   1      
+  68   1      if(USE_HORIZONTAL==0)
+  69   1              {
+  70   2      //              LCD_WR_REG(0x2a);//列地址设置
+  71   2      //              LCD_WR_DATA(x1+2);
+  72   2      //              LCD_WR_DATA(x2+2);
+  73   2      //              LCD_WR_REG(0x2b);//行地址设置
+  74   2      //              LCD_WR_DATA(y1+1);
+  75   2      //              LCD_WR_DATA(y2+1);
+  76   2      //              LCD_WR_REG(0x2c);//储存器写
+  77   2              }
+  78   1              else if(USE_HORIZONTAL==1)
+  79   1              {
+  80   2                      LCD_WR_REG(0x2a);//列地址设置
+  81   2                      LCD_WR_DATA(x1+2);
+  82   2                      LCD_WR_DATA(x2+2);
+  83   2                      LCD_WR_REG(0x2b);//行地址设置
+  84   2                      LCD_WR_DATA(y1+1);
+  85   2                      LCD_WR_DATA(y2+1);
+  86   2                      LCD_WR_REG(0x2c);//储存器写
+  87   2              }
+  88   1      //      else if(USE_HORIZONTAL==2)
+  89   1      //      {
+  90   1      //              LCD_WR_REG(0x2a);//列地址设置
+  91   1      //              LCD_WR_DATA(x1+1);
+  92   1      //              LCD_WR_DATA(x2+1);
+  93   1      //              LCD_WR_REG(0x2b);//行地址设置
+  94   1      //              LCD_WR_DATA(y1+2);
+  95   1      //              LCD_WR_DATA(y2+2);
+  96   1      //              LCD_WR_REG(0x2c);//储存器写
+  97   1      //      }
+  98   1      //      else
+  99   1      //      {
+ 100   1      //              LCD_WR_REG(0x2a);//列地址设置
+ 101   1      //              LCD_WR_DATA(x1+1);
+ 102   1      //              LCD_WR_DATA(x2+1);
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 3   
+
+ 103   1      //              LCD_WR_REG(0x2b);//行地址设置
+ 104   1      //              LCD_WR_DATA(y1+2);
+ 105   1      //              LCD_WR_DATA(y2+2);
+ 106   1      //              LCD_WR_REG(0x2c);//储存器写
+ 107   1      //      }
+ 108   1              
+ 109   1      }
+ 110          
+ 111          void LCD_Init(void)
+ 112          {
+ 113   1              SPI2_Init();     //初始化SPI2
+ 114   1      //              Delay_ms(100);
+ 115   1              LCD_RES_CMD(0);  //复位
+ 116   1              Delay_ms(100);
+ 117   1              LCD_RES_CMD(1);
+ 118   1              Delay_ms(100);
+ 119   1              
+ 120   1              LCD_BL_CMD(1);  //打开背光
+ 121   1              Delay_ms(100);
+ 122   1              
+ 123   1              //************* Start Initial Sequence **********//
+ 124   1              LCD_WR_REG(0x11); //Sleep out 
+ 125   1              Delay_ms(120);              //Delay 120ms 
+ 126   1              //------------------------------------ST7735S Frame Rate-----------------------------------------// 
+ 127   1              LCD_WR_REG(0xB1); 
+ 128   1              LCD_WR_DATA8(0x05); 
+ 129   1              LCD_WR_DATA8(0x3C); 
+ 130   1              LCD_WR_DATA8(0x3C); 
+ 131   1              LCD_WR_REG(0xB2); 
+ 132   1              LCD_WR_DATA8(0x05);
+ 133   1              LCD_WR_DATA8(0x3C); 
+ 134   1              LCD_WR_DATA8(0x3C); 
+ 135   1              LCD_WR_REG(0xB3); 
+ 136   1              LCD_WR_DATA8(0x05); 
+ 137   1              LCD_WR_DATA8(0x3C); 
+ 138   1              LCD_WR_DATA8(0x3C); 
+ 139   1              LCD_WR_DATA8(0x05); 
+ 140   1              LCD_WR_DATA8(0x3C); 
+ 141   1              LCD_WR_DATA8(0x3C); 
+ 142   1              //------------------------------------End ST7735S Frame Rate---------------------------------// 
+ 143   1              LCD_WR_REG(0xB4); //Dot inversion 
+ 144   1              LCD_WR_DATA8(0x03); 
+ 145   1              //------------------------------------ST7735S Power Sequence---------------------------------// 
+ 146   1              LCD_WR_REG(0xC0); 
+ 147   1              LCD_WR_DATA8(0x28); 
+ 148   1              LCD_WR_DATA8(0x08); 
+ 149   1              LCD_WR_DATA8(0x04); 
+ 150   1              LCD_WR_REG(0xC1); 
+ 151   1              LCD_WR_DATA8(0XC0); 
+ 152   1              LCD_WR_REG(0xC2); 
+ 153   1              LCD_WR_DATA8(0x0D); 
+ 154   1              LCD_WR_DATA8(0x00); 
+ 155   1              LCD_WR_REG(0xC3); 
+ 156   1              LCD_WR_DATA8(0x8D); 
+ 157   1              LCD_WR_DATA8(0x2A); 
+ 158   1              LCD_WR_REG(0xC4); 
+ 159   1              LCD_WR_DATA8(0x8D); 
+ 160   1              LCD_WR_DATA8(0xEE); 
+ 161   1              //---------------------------------End ST7735S Power Sequence-------------------------------------// 
+ 162   1              LCD_WR_REG(0xC5); //VCOM 
+ 163   1              LCD_WR_DATA8(0x1A); 
+ 164   1              LCD_WR_REG(0x36); //MX, MY, RGB mode 
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 4   
+
+ 165   1              if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x00);
+ 166   1              else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC0);
+ 167   1              else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x70);
+ 168   1              else LCD_WR_DATA8(0xA0); 
+ 169   1              //------------------------------------ST7735S Gamma Sequence---------------------------------// 
+ 170   1              LCD_WR_REG(0xE0); 
+ 171   1              LCD_WR_DATA8(0x04); 
+ 172   1              LCD_WR_DATA8(0x22); 
+ 173   1              LCD_WR_DATA8(0x07); 
+ 174   1              LCD_WR_DATA8(0x0A); 
+ 175   1              LCD_WR_DATA8(0x2E); 
+ 176   1              LCD_WR_DATA8(0x30); 
+ 177   1              LCD_WR_DATA8(0x25); 
+ 178   1              LCD_WR_DATA8(0x2A); 
+ 179   1              LCD_WR_DATA8(0x28); 
+ 180   1              LCD_WR_DATA8(0x26); 
+ 181   1              LCD_WR_DATA8(0x2E); 
+ 182   1              LCD_WR_DATA8(0x3A); 
+ 183   1              LCD_WR_DATA8(0x00); 
+ 184   1              LCD_WR_DATA8(0x01); 
+ 185   1              LCD_WR_DATA8(0x03); 
+ 186   1              LCD_WR_DATA8(0x13); 
+ 187   1              LCD_WR_REG(0xE1); 
+ 188   1              LCD_WR_DATA8(0x04); 
+ 189   1              LCD_WR_DATA8(0x16); 
+ 190   1              LCD_WR_DATA8(0x06); 
+ 191   1              LCD_WR_DATA8(0x0D); 
+ 192   1              LCD_WR_DATA8(0x2D); 
+ 193   1              LCD_WR_DATA8(0x26); 
+ 194   1              LCD_WR_DATA8(0x23); 
+ 195   1              LCD_WR_DATA8(0x27); 
+ 196   1              LCD_WR_DATA8(0x27); 
+ 197   1              LCD_WR_DATA8(0x25); 
+ 198   1              LCD_WR_DATA8(0x2D); 
+ 199   1              LCD_WR_DATA8(0x3B); 
+ 200   1              LCD_WR_DATA8(0x00); 
+ 201   1              LCD_WR_DATA8(0x01); 
+ 202   1              LCD_WR_DATA8(0x04); 
+ 203   1              LCD_WR_DATA8(0x13); 
+ 204   1              //------------------------------------End ST7735S Gamma Sequence-----------------------------// 
+ 205   1              LCD_WR_REG(0x3A); //65k mode 
+ 206   1              LCD_WR_DATA8(0x05); 
+ 207   1              LCD_WR_REG(0x29); //Display on 
+ 208   1              
+ 209   1              //LCD_Fill(0,0,128,160,BLUE);
+ 210   1                      //Usart1_SendString("1111\r\n");        
+ 211   1      }
+ 212          
+ 213          
+ 214          
+ 215          
+ 216          
+ 217          
+ 218          
+ 219          
+ 220          void LCD_Fill(u16 xsta, u16 ysta, u16 xend, u16 yend, u16 color)
+ 221          {          
+*** ERROR C236 IN LINE 221 OF lcd.c: '_LCD_Fill': different length of parameter lists
+ 222   1              u16 num = (xend-xsta) * (yend-ysta);
+ 223   1              u16 i = 0;
+ 224   1      
+ 225   1              LCD_Address_Set(xsta, ysta, xend-1, yend-1);//设置显示范围
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 5   
+
+ 226   1              for( i=0; i<num; i++) {
+ 227   2                      LCD_WR_DATA(color);
+ 228   2              }
+ 229   1      }
+ 230          /******************************************************************************
+ 231                函数说明：在指定位置画点
+ 232                入口数据：x,y 画点坐标
+ 233                          color 点的颜色
+ 234                返回值：  无
+ 235          ******************************************************************************/
+ 236          void LCD_DrawPoint(u16 x,u16 y,u16 color)
+ 237          {
+*** ERROR C236 IN LINE 237 OF lcd.c: '_LCD_DrawPoint': different length of parameter lists
+ 238   1              LCD_Address_Set(x,y,x,y);//设置光标位置 
+ 239   1              LCD_WR_DATA(color);
+ 240   1      } 
+ 241          
+ 242          
+ 243          ///******************************************************************************
+ 244          //      函数说明：画线
+ 245          //      入口数据：x1,y1   起始坐标
+ 246          //                x2,y2   终止坐标
+ 247          //                color   线的颜色
+ 248          //      返回值：  无
+ 249          //******************************************************************************/
+ 250          void LCD_DrawLine(u16 x1,u16 y1,u16 x2,u16 y2,u16 color)
+ 251          {
+*** ERROR C236 IN LINE 251 OF lcd.c: '_LCD_DrawLine': different length of parameter lists
+ 252   1              u16 t; 
+ 253   1              int xerr=0,yerr=0,delta_x,delta_y,distance;
+ 254   1              int incx,incy,uRow,uCol;
+ 255   1              delta_x=x2-x1; //计算坐标增量 
+ 256   1              delta_y=y2-y1;
+ 257   1              uRow=x1;//画线起点坐标
+ 258   1              uCol=y1;
+ 259   1              if(delta_x>0)incx=1; //设置单步方向 
+ 260   1              else if (delta_x==0)incx=0;//垂直线 
+ 261   1              else {incx=-1;delta_x=-delta_x;}
+ 262   1              if(delta_y>0)incy=1;
+ 263   1              else if (delta_y==0)incy=0;//水平线 
+ 264   1              else {incy=-1;delta_y=-delta_y;}
+ 265   1              if(delta_x>delta_y)distance=delta_x; //选取基本增量坐标轴 
+ 266   1              else distance=delta_y;
+ 267   1              for(t=0;t<distance+1;t++)
+ 268   1              {
+ 269   2                      LCD_DrawPoint(uRow,uCol,color);//画点
+ 270   2                      xerr+=delta_x;
+ 271   2                      yerr+=delta_y;
+ 272   2                      if(xerr>distance)
+ 273   2                      {
+ 274   3                              xerr-=distance;
+ 275   3                              uRow+=incx;
+ 276   3                      }
+ 277   2                      if(yerr>distance)
+ 278   2                      {
+ 279   3                              yerr-=distance;
+ 280   3                              uCol+=incy;
+ 281   3                      }
+ 282   2              }
+ 283   1      }
+ 284          
+ 285          
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 6   
+
+ 286          /******************************************************************************
+ 287                函数说明：画矩形
+ 288                入口数据：x1,y1   起始坐标
+ 289                          x2,y2   终止坐标
+ 290                          color   矩形的颜色
+ 291                返回值：  无
+ 292          ******************************************************************************/
+ 293          void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2,u16 color)
+ 294          {
+*** ERROR C236 IN LINE 294 OF lcd.c: '_LCD_DrawRectangle': different length of parameter lists
+ 295   1              LCD_DrawLine(x1,y1,x2,y1,color);
+ 296   1              LCD_DrawLine(x1,y1,x1,y2,color);
+ 297   1              LCD_DrawLine(x1,y2,x2,y2,color);
+ 298   1              LCD_DrawLine(x2,y1,x2,y2,color);
+ 299   1      }
+ 300          
+ 301          
+ 302          /******************************************************************************
+ 303                函数说明：画圆
+ 304                入口数据：x0,y0   圆心坐标
+ 305                          r       半径
+ 306                          color   圆的颜色
+ 307                返回值：  无
+ 308          ******************************************************************************/
+ 309          void Draw_Circle(u16 x0,u16 y0,u8 r,u16 color)
+ 310          {
+*** ERROR C236 IN LINE 310 OF lcd.c: '_Draw_Circle': different length of parameter lists
+ 311   1              int a,b;
+ 312   1              a=0;b=r;          
+ 313   1              while(a<=b)
+ 314   1              {
+ 315   2                      LCD_DrawPoint(x0-b,y0-a,color);             //3           
+ 316   2                      LCD_DrawPoint(x0+b,y0-a,color);             //0           
+ 317   2                      LCD_DrawPoint(x0-a,y0+b,color);             //1                
+ 318   2                      LCD_DrawPoint(x0-a,y0-b,color);             //2             
+ 319   2                      LCD_DrawPoint(x0+b,y0+a,color);             //4               
+ 320   2                      LCD_DrawPoint(x0+a,y0-b,color);             //5
+ 321   2                      LCD_DrawPoint(x0+a,y0+b,color);             //6 
+ 322   2                      LCD_DrawPoint(x0-b,y0+a,color);             //7
+ 323   2                      a++;
+ 324   2                      if((a*a+b*b)>(r*r))//判断要画的点是否过远
+ 325   2                      {
+ 326   3                              b--;
+ 327   3                      }
+ 328   2              }
+ 329   1      }
+ 330          
+ 331          
+ 332          
+ 333          
+ 334          
+ 335          /******************************************************************************
+ 336                函数说明：显示单个字符
+ 337                入口数据：x,y显示坐标
+ 338                          num 要显示的字符
+ 339                          fc 字的颜色
+ 340                          bc 字的背景色
+ 341                          sizey 字号
+ 342                          mode:  0非叠加模式  1叠加模式
+ 343                返回值：  无
+ 344          ******************************************************************************/
+ 345          void LCD_ShowChar(u16 x,u16 y,u8 num,u16 fc,u16 bc,u8 sizey,u8 mode)
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 7   
+
+ 346          {
+*** ERROR C236 IN LINE 346 OF lcd.c: '_LCD_ShowChar': different length of parameter lists
+ 347   1              u8 temp,sizex,t,m=0;
+ 348   1              u16 i,TypefaceNum;//一个字符所占字节大小
+ 349   1              u16 x0=x;
+ 350   1              sizex=sizey/2;
+ 351   1              TypefaceNum=(sizex/8+((sizex%8)?1:0))*sizey;
+ 352   1              num=num-' ';    //得到偏移后的值
+ 353   1              LCD_Address_Set(x,y,x+sizex-1,y+sizey-1);  //设置光标位置 
+ 354   1              for(i=0;i<TypefaceNum;i++)
+ 355   1              { 
+ 356   2      //              if(sizey==12)temp=ascii_1206[num][i];                  //调用6x12字体
+ 357   2      //              else if(sizey==16)temp=ascii_1608[num][i];               //调用8x16字体
+ 358   2                      if(sizey==16)temp=ascii_1608[num][i];
+ 359   2      //              else if(sizey==24)temp=ascii_2412[num][i];               //调用12x24字体
+ 360   2      //              else if(sizey==32)temp=ascii_3216[num][i];               //调用16x32字体
+ 361   2      //              else return;
+ 362   2                      for(t=0;t<8;t++)
+ 363   2                      {
+ 364   3                              if(!mode)//非叠加模式
+ 365   3                              {
+ 366   4                                      if(temp&(0x01<<t))LCD_WR_DATA(fc);
+ 367   4                                      else LCD_WR_DATA(bc);
+ 368   4                                      m++;
+ 369   4                                      if(m%sizex==0)
+ 370   4                                      {
+ 371   5                                              m=0;
+ 372   5                                              break;
+ 373   5                                      }
+ 374   4                              }
+ 375   3                              else//叠加模式
+ 376   3                              {
+ 377   4                                      if(temp&(0x01<<t))LCD_DrawPoint(x,y,fc);//画一个点
+ 378   4                                      x++;
+ 379   4                                      if((x-x0)==sizex)
+ 380   4                                      {
+ 381   5                                              x=x0;
+ 382   5                                              y++;
+ 383   5                                              break;
+ 384   5                                      }
+ 385   4                              }
+ 386   3                      }
+ 387   2              }                 
+ 388   1      }
+ 389          
+ 390          
+ 391          /******************************************************************************
+ 392                函数说明：显示字符串
+ 393                入口数据：x,y显示坐标
+ 394                          *p 要显示的字符串
+ 395                          fc 字的颜色
+ 396                          bc 背景色
+ 397                          sizey 字号
+ 398                          mode:  0非叠加模式  1叠加模式
+ 399                返回值：  无
+ 400          ******************************************************************************/
+ 401          void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 fc,u16 bc,u8 sizey,u8 mode)
+ 402          {         
+*** ERROR C236 IN LINE 402 OF lcd.c: '_LCD_ShowString': different length of parameter lists
+ 403   1              while(*p!='\0')
+ 404   1              {       
+ 405   2                      LCD_ShowChar(x,y,*p,fc,bc,sizey,mode);
+C51 COMPILER V9.60.7.0   LCD                                                               12/06/2025 16:29:10 PAGE 8   
+
+ 406   2                      x+=sizey/2;
+ 407   2                      p++;
+ 408   2              }  
+ 409   1      }
+ 410          
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  21 ERROR(S)

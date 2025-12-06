@@ -385,6 +385,48 @@
         </Group>
         <Group>
           <GroupName>user</GroupName>
+          <Files>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>api</GroupName>
+          <Files>
+            <File>
+              <FileName>beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\beep.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\spi.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

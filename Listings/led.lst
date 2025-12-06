@@ -1,0 +1,46 @@
+C51 COMPILER V9.60.7.0   LED                                                               12/06/2025 16:29:11 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN .\Objects\led.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\led.l
+                    -st) OBJECT(.\Objects\led.obj)
+
+line level    source
+
+   1          #include "led.h"
+   2          
+   3          void Led_Config(void){
+   4   1          P1M1 &= ~((1<<5) | (1<<2));
+   5   1          P1M0 |= ((1<<5) | (1<<2));
+   6   1      
+   7   1          P5M1 &= ~(1<<5);
+   8   1          P5M0 |= (1<<5);
+   9   1      
+  10   1          LED1_PIN = 1; LED2_PIN = 1; LED3_PIN = 1;
+  11   1      }
+  12          
+  13          void Led_Water(void){
+  14   1          static unsigned char count = 0;
+  15   1          switch(count){
+  16   2              case 0:LED1(1);LED2(0);LED3(0); break;
+  17   2              case 1:LED1(0);LED2(1);LED3(0); break;
+  18   2              case 2:LED1(0);LED2(0);LED3(1); break;
+  19   2          }
+  20   1          count++;
+  21   1          count %= 3;
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     65    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

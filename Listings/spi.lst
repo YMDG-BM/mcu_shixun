@@ -1,0 +1,74 @@
+C51 COMPILER V9.60.7.0   SPI                                                               12/06/2025 16:29:11 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE SPI
+OBJECT MODULE PLACED IN .\Objects\spi.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE spi.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\spi.l
+                    -st) OBJECT(.\Objects\spi.obj)
+
+line level    source
+
+   1          #include "spi.h"
+*** ERROR C141 IN LINE 38 OF spi.h: syntax error near 'TxData', expected ')'
+   2          
+   3          typedef unsigned char u8;
+   4          typedef unsigned int u16;
+   5          typedef unsigned long u32;
+   6          
+   7          void SPI2_Init(void)
+   8          {
+   9   1      
+  10   1      P2M1 &= ~((0x1<<0)|(0x1<<1)|(0x1<<3));
+  11   1      P2M0 &= ~((0x1<<0)|(0x1<<1)|(0x1<<3));
+  12   1      
+  13   1      P3M1 &= ~((0x1<<5));
+  14   1      P3M0 &= ~((0x1<<5));
+  15   1      
+  16   1      P3M1 &= ~((0x1<<4));
+  17   1      P3M0 |= ((0x1<<4));
+  18   1      
+  19   1      
+  20   1      P4M1 &= ~((0x1<<5));
+  21   1      P4M0 &= ~((0x1<<5));    
+  22   1      
+  23   1      LCD_CS_CMD(1);
+  24   1      LCD_BL_CMD(0);
+  25   1      LCD_RES_CMD(1);
+  26   1      LCD_SCK_CMD(0);
+  27   1      LCD_DC_CMD(1);
+  28   1      }
+  29          
+  30          
+  31          
+  32          
+  33          //SPI 速度设置函数
+  34          
+  35          
+  36          //SPIx 读写一个字节
+  37          //TxData:要写入的字节
+  38          //返回值:读取到的字节
+  39          void SPI2_ReadWriteByte(u8 TxData)
+  40          {               
+  41   1      unsigned char i;
+  42   1      for(i = 0; i < 8; i++) {
+  43   2      LCD_SCK_CMD(0);
+  44   2      if(TxData & (0x80)) {
+  45   3      LCD_MOSI_CMD(1);
+  46   3      } else {
+  47   3      LCD_MOSI_CMD(0);
+  48   3      }
+  49   2      Delay_us(1);
+  50   2      TxData <<= 1;
+  51   2      LCD_SCK_CMD(1);  // 上升沿发送数据
+  52   2      
+  53   2      Delay_us(1);
+C51 COMPILER V9.60.7.0   SPI                                                               12/06/2025 16:29:11 PAGE 2   
+
+  54   2      }       
+  55   1      LCD_SCK_CMD(0);         
+  56   1      }
+  57          
+  58          
+  59          
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

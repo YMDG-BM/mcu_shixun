@@ -1,0 +1,91 @@
+C51 COMPILER V9.60.7.0   DELAY                                                             12/06/2025 16:29:10 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\Objects\delay.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\del
+                    -ay.lst) OBJECT(.\Objects\delay.obj)
+
+line level    source
+
+   1          #include "delay.h"
+   2          
+   3          void Delay1ms(void)             //@22.1184MHz
+   4          {
+   5   1              unsigned char i, j;
+   6   1      
+   7   1              _nop_();
+   8   1              _nop_();
+   9   1              i = 22;
+  10   1              j = 128;
+  11   1              do
+  12   1              {
+  13   2                      while (--j);
+  14   2              } while (--i);
+  15   1      }
+  16          
+  17          void Delay1us(void)             //@22.1184MHz
+  18          {
+  19   1              unsigned char i;
+  20   1      
+  21   1              i = 3;
+  22   1              while (--i);
+  23   1      }
+  24          
+  25          void Delay_us(int time)
+  26          {
+  27   1              while(time--) {
+  28   2                      Delay1us();
+  29   2              }
+  30   1      }
+  31          
+  32          void Delay_ms(int time)
+  33          {
+  34   1      
+  35   1              while(time--) {
+  36   2              Delay1ms();
+  37   2              }
+  38   1      }
+  39          
+  40          void Timer0_Init(void) {
+  41   1          AUXR |= 0x80;     
+  42   1          TMOD &= 0xF0;    
+  43   1          TMOD |= 0x01;     
+  44   1          TH0 = 0xFF;      
+  45   1          TL0 = 0x21;  
+  46   1          ET0 = 1;         
+  47   1          TR0 = 1;          
+  48   1          EA = 1;            
+  49   1      }
+  50          unsigned int LedTask_Time[2] = {0, 50000};
+  51          unsigned int KeyTask_Time[2] = {0, 500};
+  52          unsigned int BlueTask_Time[2] = {0, 10000};
+  53          unsigned int CarMoveTask_Time[2] = {0,20000};
+  54          
+C51 COMPILER V9.60.7.0   DELAY                                                             12/06/2025 16:29:10 PAGE 2   
+
+  55          
+  56          void Timer0_ISR() interrupt 1 {
+  57   1      
+  58   1          TH0 = 0xFF;       
+  59   1          TL0 = 0x21;        
+  60   1          LedTask_Time[0]++;
+  61   1          KeyTask_Time[0]++;
+  62   1          BlueTask_Time[0]++;
+  63   1          CarMoveTask_Time[0]++;
+  64   1      
+  65   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    121    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

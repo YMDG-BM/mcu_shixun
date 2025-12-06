@@ -6,6 +6,7 @@
 #include "delay.h"
 #include "beep.h"
 #include "key.h"
-
+#include "spi.h"
+#include "lcd.h"
 
 #endif
