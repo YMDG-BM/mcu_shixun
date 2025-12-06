@@ -22,12 +22,11 @@ virtualFolder:
         - path: delay.c
         - path: led.c
         - path: led.h
-        - path: utils.c
-        - path: utils.h
         - path: beep.c
         - path: beep.h
         - path: key.c
         - path: key.h
+        - path: delay.h
       folders: []
 dependenceList: []
 outDir: build
@@ -40,7 +39,8 @@ targets:
       incList:
         - ../../../../../Keil_v5/C51/INC/STC
       libList: []
-    excludeList: []
+    excludeList:
+      - <virtual_root>/api/utils.c
     toolchain: Keil_C51
     toolchainConfigMap:
       Keil_C51:

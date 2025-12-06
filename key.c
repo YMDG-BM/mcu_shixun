@@ -1,18 +1,11 @@
 #include "key.h"
 #include "beep.h"
 #include "delay.h"
-#include "utils.h"
-/*
-	KEY1 P3.2
-	KEY2 P3.3
-	KEY3 P4.1
-*/
 
 void Key_Config() {
-	P3M1 |=  (1<<2) | (1<<3);
-	P3M0 &= ~(1<<2) | (1<<3);	
+	P3M1 |=  ((1<<2) | (1<<3));
+	P3M0 &= ~((1<<2) | (1<<3));	
 }
-
 
 void Get_Key_Value() {
 	if(KEY1_PIN == 0) {
@@ -33,8 +26,9 @@ void Get_Key_Value() {
 
 
 char Key_Scan(void) {
-	char KeyValue;
-	static char KeyCount[3] = {0};
+	char KeyValue=0;
+	static char KeyCount[2] = {0};
+
 	if(KEY1_PIN == 0) {
 		KeyCount[0]++;
 	} else {
@@ -54,3 +48,4 @@ char Key_Scan(void) {
 	}
 	return KeyValue;
 }
+
