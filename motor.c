@@ -27,9 +27,6 @@ void MOTOR_Config(void)
 
 
 
-
-
-
 //小车切换运行状态耗电过高会复位
 void Car_MotorControl(CarControl_Typedef c)
 {
@@ -50,6 +47,15 @@ void Car_MotorControl(CarControl_Typedef c)
 		Motor_Right(c.speed);
 	}
 }
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -102,6 +108,3 @@ void Motor_LeftBackControl(int speed)
 		Motor_Back_Left_B(-speed);
 	}
 }
-
-
-

@@ -4,7 +4,6 @@
 #include "STC15F2K60S2.h"
 #include "delay.h"
 
-#define MAX_SPEED	90
 
 #ifndef _DATA_TYPES_DEFINED
 #define _DATA_TYPES_DEFINED
@@ -12,6 +11,8 @@ typedef unsigned char u8;
 typedef unsigned int u16;
 typedef unsigned long u32;
 #endif
+
+#define MAX_SPEED	90
 
 //方向定义
 typedef enum{
@@ -87,4 +88,3 @@ void Motor_LeftBackControl(int speed);
 
 
 #endif
-

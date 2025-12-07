@@ -10,5 +10,8 @@
 #include "lcd.h"
 #include "motor.h"
 #include "pic.h"
+#include "tcrt5000.h"
+#include "blu.h"
+#include "usart1.h"
 
 #endif

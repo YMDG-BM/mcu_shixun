@@ -36,6 +36,12 @@ virtualFolder:
         - path: spi.h
         - path: pic.c
         - path: pic.h
+        - path: tcrt5000.c
+        - path: tcrt5000.h
+        - path: blu.c
+        - path: blu.h
+        - path: usart1.c
+        - path: usart1.h
       folders: []
 dependenceList: []
 outDir: build
