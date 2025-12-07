@@ -209,7 +209,23 @@ void LCD_Init(void)
 }
 
 
-
+// 更快的版本，直接调用 LCD_Writ_Bus
+void LCD_ShowPicture(u16 x, u16 y, u16 w, u16 h, const u8 code *p)
+{
+    u32 i;
+    u32 pic_size = (u32)w * h; 
+    
+    LCD_Address_Set(x, y, x + w - 1, y + h - 1);
+    
+    // 准备写数据，先拉高DC
+    LCD_DC_CMD(1); 
+    
+    for(i = 0; i < pic_size; i++)
+    {
+        LCD_Writ_Bus(*p++); // 发送高8位
+        LCD_Writ_Bus(*p++); // 发送低8位
+    }
+}
 
 
 

@@ -9,5 +9,6 @@
 #include "spi.h"
 #include "lcd.h"
 #include "motor.h"
+#include "pic.h"
 
 #endif

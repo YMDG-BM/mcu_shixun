@@ -34,6 +34,8 @@ virtualFolder:
         - path: lcdfont.h
         - path: spi.c
         - path: spi.h
+        - path: pic.c
+        - path: pic.h
       folders: []
 dependenceList: []
 outDir: build
