@@ -3,6 +3,7 @@
 
 #include "STC15F2K60S2.h"
 #include <intrins.h>
+#include "motor.h"
 
 extern unsigned int LedTask_Time[2];
 extern unsigned int KeyTask_Time[2];

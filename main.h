@@ -8,5 +8,6 @@
 #include "key.h"
 #include "spi.h"
 #include "lcd.h"
+#include "motor.h"
 
 #endif

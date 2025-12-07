@@ -6,7 +6,9 @@ packDir: null
 srcDirs: []
 virtualFolder:
   name: <virtual_root>
-  files: []
+  files:
+    - path: motor.c
+    - path: motor.h
   folders:
     - name: project
       files:
