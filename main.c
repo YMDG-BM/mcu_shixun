@@ -3,6 +3,7 @@
 void FindLine(void);
 
 void main(void){
+    USART1_Config();
     Led_Config();
     LCD_Init();
     Beep_Config();
@@ -14,6 +15,7 @@ void main(void){
     MOTOR_Config();
     TCRT5000_Config();
     Motor_Front(40);
+    printf("UART TEST.\n");
 	while(1)
 	{
 //		LED1(1);LED2(1);LED3(1);//开灯

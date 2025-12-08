@@ -22,8 +22,8 @@ void USART1_Config(void)
 	AUXR |=  (1<<4);	//Timer run enable---打开定时器2
     
     // 计算波特率重载值
-		TH2 = (u8)((65536UL - (FOSC / 4) / BAUD) / 256);
-		TL2 = (u8)((65536UL - (FOSC / 4) / BAUD) % 256);
+		T2H = (u8)((65536UL - (FOSC / 4) / BAUD) / 256);
+		T2L = (u8)((65536UL - (FOSC / 4) / BAUD) % 256);
     
 
     ES = 1;             // 使能串口中断
